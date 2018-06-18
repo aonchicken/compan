@@ -17,9 +17,3 @@ class Product(models.Model):
         return 'Id:{0} Name:{1}'.format(self.id, self.device_name)
  # return self.device_name
   
-
-
-  
-
-
-

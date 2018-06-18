@@ -109,10 +109,31 @@ class GeneratePdf(View):
          return HttpResponse(pdf, content_type='application/pdf')
 
 
-#@login_required
-def doc_pdf2(request):
+
+context = {
+                'date' : '24 พฤษภาคม 2561',
+                'customer_tel' : '0859078578',
+                'customer_address' : 'Bankok',
+                'no': 1,
+                'contract_no': 'สอ.2/2561',
+                'customer_name': 'สมมติ ขึ้นมา',
+                'detail_pd': 'Router 892w',
+                'staff_name': 'รัฐกานต์ บันที',
+                'count_pd' : 1 ,
+                'key_pd': '-',
+                'serial_pd' : 8400344678923,
+                'ref' : '-',
+                'note' : '1กล่อง',
+            }  
+
+
+@login_required
+def doc_pdf(request):
     product = Product.objects.get(id=1)
-    return render(request,'doc_pdf.html',{"product" : product })  
+    
+    return render(request,'doc_pdf.html',context)  
+
+
 @login_required
 def view_pdf(request):
     product = Product.objects.get(id=1)
@@ -126,24 +147,6 @@ def product_search(request):
     products = Product.objects.filter(name__contains = request.GET['product_search'])
     return render(request,'index.html',{"products" : products})
 '''
-
-class DemoPDFView(PDFTemplateView):
-    template_name = 'hello.html'
-
-    pdf_filename = 'hellalo.pdf'
-
-    def get_context_data(self, **kwargs):
-        return super(DemoPDFView, self).get_context_data(
-            pagesize='A4',
-            title='Hi there!',
-            today=now(),
-            **kwargs
-        )
-
-
-class PDFUserDetailView(PDFTemplateResponseMixin, DetailView):
-    model = get_user_model()
-    template_name = 'user_detail.html'
 
 
 
@@ -244,20 +247,6 @@ class PDF_View(TemplateView):
         with override_settings(STATIC_URL=static_url, MEDIA_URL=media_url):
             template = loader.get_template(self.template_name)
             #context = self.get_context_data(*args, **kwargs)
-            context = {
-                'date' : '24 พฤษภาคม 2561',
-                'customer_tel' : '0859078578',
-                'customer_address' : 'Bankok',
-                'no': 1,
-                'contract_no': 'สอ.2/2561',
-                'customer_name': 'สมมติ ขึ้นมา',
-                'detail_pd': 'Router 892w',
-                'staff_name': 'รัฐกานต์ บันที',
-                'count_pd' : 1 ,
-                'key_pd': '-',
-                'serial_pd' : 8400344678923,
-                'ref' : '-',
-                'note' : '1กล่อง',
-            }  
+         
             html = template.render(context)
             return html
